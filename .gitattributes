@@ -1,0 +1,27 @@
+# Default: normalize to LF in repo
+* text=auto eol=lf
+
+# Windows-specific files keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files (no conversion)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+
+# Dockerfile and shell scripts must be LF (critical!)
+Dockerfile text eol=lf
+*.sh text eol=lf
+
+# YAML/config must be LF
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
