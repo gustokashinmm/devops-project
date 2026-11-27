@@ -15,12 +15,16 @@ venv/
 env/
 ENV/
 
-# === Testing ===
+# === Testing / CI artifacts ===
 .pytest_cache/
 .coverage
 .coverage.*
+coverage.xml
+junit.xml
 htmlcov/
 .tox/
+*.sarif
+ruff-report.json
 
 # === Ruff / mypy ===
 .ruff_cache/
@@ -36,7 +40,9 @@ htmlcov/
 *.p12
 
 # === IDE / OS ===
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
@@ -44,8 +50,12 @@ htmlcov/
 Thumbs.db
 
 # === Docker ===
+docker-compose.override.yml
 *.log
 
-# === k6 / load test results ===
-loadtest/results/
+# === k6 / load test ===
+# Отчёты нагрузочного теста ОБЯЗАНЫ быть в репозитории (порог сдачи №10).
+# Игнорируем только сырые тяжёлые выгрузки.
+loadtest/results/raw-*.json
 *.json.gz
+!loadtest/results/*.log

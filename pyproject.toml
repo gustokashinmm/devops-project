@@ -3,18 +3,22 @@ name = "devops-project"
 version = "0.1.0"
 description = "DevOps course project: REST API (online shop) with CI/CD, Docker, monitoring"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 dependencies = [
-    "fastapi>=0.115",
-    "uvicorn[standard]>=0.32",
-    "prometheus-client>=0.21",
+    "fastapi==0.162.0",
+    "uvicorn[standard]==0.54.0",
+    "pydantic==2.14.2",
+    "pydantic-settings==2.16.3",
+    "prometheus-client==0.26.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
-    "httpx>=0.28",
-    "ruff>=0.8",
+    "pytest==9.2.0",
+    "pytest-cov==7.1.0",
+    "httpx==0.28.1",
+    "ruff==0.17.3",
+    "pip-tools==7.7.0",
 ]
 
 [build-system]
@@ -28,7 +32,7 @@ include = ["app*"]
 [tool.ruff]
 line-length = 88
 target-version = "py312"
-src = ["app", "tests"]
+src = ["."]
 
 [tool.ruff.lint]
 select = [
@@ -45,8 +49,18 @@ ignore = [
     "E501",  # line too long (handled by formatter)
 ]
 
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]  # allow assert in tests
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+# FastAPI: Depends()/Query() в значениях по умолчанию — норма, а не B008
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Query",
+    "fastapi.Path",
+    "fastapi.Body",
+    "fastapi.Header",
+]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -57,4 +71,12 @@ indent-style = "space"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = "-v --tb=short"
+addopts = "-v --tb=short --strict-markers"
+
+# === coverage config ===
+[tool.coverage.run]
+source = ["app"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
